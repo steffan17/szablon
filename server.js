@@ -4,6 +4,8 @@ const app = express()
 const port = process.env.PORT || 3000
 const bodyParser = require('body-parser')
 
+const apiRouter = require('./router/api.js');
+
 app.engine('handlebars', expresshandlebars.engine({
     defaultLayout: 'main',
   }))
@@ -16,10 +18,15 @@ app.use(express.urlencoded({
 }));
 
 app.use(express.static('public'));
+app.use('/', apiRouter);
 
 app.get('/', (req,res)=>{
     var scripts = [{ script: '/js/bundle.js' }];
     res.render('home', {title: 'HOME', scripts: scripts })
+})
+app.get('/db', (req,res)=>{
+    var scripts = [{ script: '/js/bundle.js' }];
+    res.render('db', {title: 'DB', scripts: scripts })
 })
 
 app.use((req, res) => {
